@@ -1,0 +1,25 @@
+# true 1 和 false 0 
+width: 4096             #图像宽度
+height: 2460            #图像高度
+Offset_x: 0             #X方向偏置
+Offset_y: 0             #Y方向偏置
+
+FrameRateEnable: true   #使能 
+FrameRate: 10           #帧率
+
+ExposureTime: 5000     #曝光时间
+
+GammaEnable: true
+Gamma: 0.7              #伽马因子
+
+GainAuto: 1             #亮度的自动增益
+
+# GammaEnable: false
+# Gamma: 0.7              #伽马因子
+
+# GainAuto: 24             #亮度的固定增益
+
+SaturationEnable: false
+Saturation: 128          #饱和度
+
+BalanceWhiteAuto: 1    # 1=自动白平衡，0=手动
