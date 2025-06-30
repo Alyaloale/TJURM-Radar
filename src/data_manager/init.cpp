@@ -65,8 +65,8 @@ bool init_driver() {
     // 初始化敌方车信息
     for(int i = 0; i < 6; i++){
         Car car;
-        car.last_pos = cv::Point3f(7500, 26239, 0);
-        car.pos = cv::Point3f(7500, 26239, 0);
+        car.last_pos = cv::Point3f(7500, 25676, 0);
+        car.pos = cv::Point3f(7500, 25676, 0);
         car.is_debuff = false;
         car.is_dehealth = false;
         car.is_occluded = true;

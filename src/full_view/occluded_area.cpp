@@ -27,8 +27,10 @@ void get_occlude_area()
             Data::occluded_area.at<cv::Vec3b>(x, y) = Data::point_set[i].color;
         }
     }
+    cv::Mat occlude_clone = Data::occluded_area.clone();
+    cv::resize(occlude_clone,occlude_clone,cv::Size(1280,960));
     //显示图像
-    cv::imshow("occluded_area", Data::occluded_area);
+    cv::imshow("occluded_area", occlude_clone);
 }
 
 //遮挡区域获取
@@ -151,8 +153,8 @@ void correct_pos(cv::Point3f& new_pos)
     int px=(new_pos.x/10-int(new_pos.x/10))>=0.5?new_pos.x/10+1:new_pos.x/10;
     int py=(new_pos.y/10-int(new_pos.y/10))>=0.5?new_pos.y/10+1:new_pos.y/10;
     std::vector<cv::Point2d>may_points;
-    for(int i = -150; i <= 150; i++){
-        for(int j = -150; j <= 150; j++){
+    for(int i = -400; i <= 400; i++){
+        for(int j = -400; j <= 400; j++){
             int x = int(px + i + 0.5);
             int y = int(py + j + 0.5);
             if(x>=0&&y>=0&&x<1500&&y<2800&&Data::is_beoccluded[x][y]){
@@ -172,49 +174,77 @@ void correct_pos(cv::Point3f& new_pos)
     new_pos.x = best_point.x*10;
     new_pos.y = best_point.y*10;
 }
-void specialdetect(int id,Car &pos)
+void specialdetect(int id,Car &car)
 {
-    if(id == 2){
-        int sign=0;
-        double disy;
-        double mindis = 100000;
-        for(int i=0;i<pos.possible_location.size();i++){
-            disy = pos.possible_location[i].y - pos.pos.y;
-            if(disy < 0)disy = -disy;
-            if(disy < mindis){
-                mindis = disy;
-                sign = i;
-                pos.pos = pos.possible_location[i];
+    if(car.pos.y > 24350 && car.pos.x < 5450)
+    {
+        car.pos.x = 1180.18;
+        car.pos.y = 25349;
+    }
+    else if(car.pos.y < 24993 &&car.pos.y > 22519 && car.pos.x > 9516)
+    {
+        car.pos.x = 11743.18;
+        car.pos.y = 23706;
+    }
+    else if(car.pos.y < 22519&& car.pos.y >17868 )
+    {
+        if(car.pos.x < 7517)
+        {
+            if(id==2)
+            {
+                if(car.pos.x < 5700)
+                {
+                    if(car.pos.x > 5110)
+                    {
+                        car.pos.x = 5110;
+                        car.pos.y = 22075;
+                    }
+                }
+                else
+                {
+                    car.pos.x = 4320;
+                    car.pos.y = 18328;
+                }
+            }
+            else
+            {
+                car.pos.x = 4320;
+                car.pos.y = 18328;
             }
         }
-        if(sign <3){
-            double disx;
-            double mindis = 100000;
-            for(int i=0;i < 3;i++){
-                disx = pos.possible_location[i].x - pos.pos.x;
-                if(disx < 0)disx = -disx;
-                if(disx < mindis){
-                    mindis = disx;
-                    pos.pos = pos.possible_location[i];
+        else
+        {
+            if(id==2)
+            {
+                if(car.pos.x < 9153)
+                {
+                    car.pos.x = 8630;
+                    car.pos.y = 18721.28;
                 }
+                else
+                {
+                    car.pos.x = 12274.02;
+                    car.pos.y = 16704.4;
+                }
+            }
+            else
+            {
+                car.pos.x = 11257.02;
+                car.pos.y = 17344.4;
             }
         }
     }
-    else {
-        double disx,disy;
-        double mindis = 100000;
-        double k;
-        for(int i=0;i<pos.possible_location.size();i++){
-            disx = pos.possible_location[i].x - pos.pos.x;
-            if(disx < 0)disx = -disx;
-            disy = pos.possible_location[i].y - pos.pos.y;
-            if(disy < 0)disy = -disy;
-            double dis = sqrt(disx*disx+disy*disy);
-            if(dis < mindis && dis < 4200){
-                mindis = dis;
-                pos.pos = pos.possible_location[i];
-            }
+    else if(car.pos.y > 14018 && car.pos.y < 17868 && car.pos.x > 2548 && car.pos.x < 12487)
+    {
+        car.pos.x = 7634;
+        car.pos.y = 15681.67;
+    }
+    else if(car.pos.y > 9107 && car.pos.y < 14018)
+    {
+        if(car.pos.x < 4218)
+        {
+            car.pos.x = 1913;
+            car.pos.y = 12027;
         }
-
     }
 }

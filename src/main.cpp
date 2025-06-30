@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
 
         // 车辆信息清零
         for(auto &enemy : Data::enemy_info){
-            enemy.pos = enemy.last_pos;
+            enemy.is_occluded = true;
         }
         // 获取装甲板在场地坐标系下的3D坐标
         for(auto& yolo : *yolo_list){
@@ -177,6 +177,7 @@ int main(int argc, char* argv[]) {
                 cv::Point3f new_pos = enemy.last_pos;
                 correct_pos(new_pos);
                 enemy.pos = new_pos;
+                specialdetect(enemy.id, enemy);
             }
             // 将检测到的点绘制到小地图上
             int scale = 10;
@@ -255,16 +256,18 @@ int main(int argc, char* argv[]) {
                     }
                 }
             }
-            cv::resize(imagewithdepth, imagewithdepth, cv::Size(2560, 1920));
+            cv::resize(imagewithdepth, imagewithdepth, cv::Size(1280, 960));
             cv::imshow("image" + std::to_string(i), imagewithdepth);
         }
 
 
         // cv::resize(Data::radar_depth[0], Data::radar_depth[0], cv::Size(1280, 960));
         // cv::imshow("depth", Data::radar_depth[0]);
-        cv::imshow("image", image);
+        cv::Mat image_show = image.clone();
+        cv::resize(image_show, image_show, cv::Size(1280, 960));
+        cv::imshow("image", image_show);
         // 将map缩小3倍显示
-        cv::resize(map, map, cv::Size(map.cols/2, map.rows/2));
+        cv::resize(map, map, cv::Size(map.cols/3, map.rows/3));
         cv::imshow("map", map);
         //q暂停
         if(cv::waitKey(1) == 'q'){

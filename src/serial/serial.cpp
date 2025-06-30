@@ -183,6 +183,8 @@ void send_map(){
     Data::map_robot_data.sentry_position_y = Data::enemy_info[0].map_pos.y;
     Data::map_robot_data.hero_position_x = Data::enemy_info[1].map_pos.x;
     Data::map_robot_data.hero_position_y = Data::enemy_info[1].map_pos.y;
+    //Data::map_robot_data.infantry_3_position_x = 0.1;
+    //Data::map_robot_data.infantry_3_position_y = 0.1;
     Data::map_robot_data.engineer_position_x = Data::enemy_info[2].map_pos.x;
     Data::map_robot_data.engineer_position_y = Data::enemy_info[2].map_pos.y;
     Data::map_robot_data.infantry_3_position_x = Data::enemy_info[3].map_pos.x;

@@ -28,7 +28,7 @@ struct Car {
     bool is_dehealth;   // 是否正在掉血
     bool is_occluded;   // 是否被遮挡
     bool is_live;       // 是否存活
-    std::vector<cv::Point3f>possible_location;//可能的位置
+        //std::vector<cv::Point3f>possible_location;//可能的位置
 };
 
 struct pointwithcolor{
