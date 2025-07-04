@@ -42,7 +42,6 @@ int main(int argc, char* argv[]) {
     //cv::undistort(image, undistort_image, Data::camera[camera_id]->intrinsic_matrix, Data::camera[camera_id]->distortion_coeffs);
     memcpy(Data::camera[camera_id]->image, image.data, Data::camera[camera_id]->height * Data::camera[camera_id]->width * 3);
     init_occlude_area();
-
     // 主循环
     while(true){
 
@@ -165,19 +164,21 @@ int main(int argc, char* argv[]) {
             Data::enemy_info[yolo.class_id % 9].pos = armor_3d_mean;
             //std::cout<<"enemy id: " << yolo.class_id % 9 << " pos: " << Data::enemy_info[yolo.class_id % 9].pos.x << " " << Data::enemy_info[yolo.class_id % 9].pos.y << " " << Data::enemy_info[yolo.class_id % 9].pos.z << std::endl;
             Data::enemy_info[yolo.class_id % 9].last_pos = Data::enemy_info[yolo.class_id % 9].pos;
+            // 记录当前时间
+            Data::enemy_info[yolo.class_id % 9].last_time = std::chrono::high_resolution_clock::now();
         }
 
         //遮挡车辆处理
 
         for(auto &enemy : Data::enemy_info){
 
-
             if(enemy.is_occluded)
             {
+                auto duration_ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now() - enemy.last_time);
                 cv::Point3f new_pos = enemy.last_pos;
                 correct_pos(new_pos);
                 enemy.pos = new_pos;
-                specialdetect(enemy.id, enemy);
+                if(duration_ms.count() > 3000)specialdetect(enemy.id, enemy);
             }
             // 将检测到的点绘制到小地图上
             int scale = 10;
